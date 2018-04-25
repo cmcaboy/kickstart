@@ -38,7 +38,7 @@ contract Campaign {
     uint public minimumContribution;
     mapping(address => bool) public approvers;
     // bool is true if approver has approved request.
-    uint approversCount;
+    uint public approversCount;
     
     modifier restricted() {
         require(msg.sender == manager);
@@ -49,20 +49,6 @@ contract Campaign {
     function Campaign(uint minimum, address creator) public {
         manager = creator;
         minimumContribution = minimum;
-    }
-
-    function getSummary() public view returns (uint, uint, uint, uint, address) {
-        return (
-            minimumContribution,
-            this.balance,
-            requests.length,
-            approversCount,
-            manager
-        );
-    }
-
-    function getRequestCount() public view returns (uint) {
-        return requests.length;
     }
     
     function contribute() public payable {
@@ -127,6 +113,20 @@ contract Campaign {
         
         // Flip the requests complete flag to true.
         request.complete = true;
+    }
+
+    function getSummary() public view returns (uint, uint, uint, uint, address) {
+        return (
+            minimumContribution,
+            this.balance,
+            requests.length,
+            approversCount,
+            manager
+        );
+    }
+
+    function getRequestCount() public view returns (uint) {
+        return requests.length;
     }
     
 }
